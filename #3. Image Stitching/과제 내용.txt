@@ -1,0 +1,45 @@
+(마감 날자가 변경되었으며 참고사항 및 첨부파일이 추가되었습니다.)
+
+(12월 24일 11:25, 첨부파일 수정)
+
+마지막 과제는 수업 중 공지한 대로 보는 방향이 다른 영상 두 장을 붙여서 한 장 처럼 만드는 Image Stitching 과제입니다.
+
+1. 입력은 직접 촬영한 두 장의 사진을 사용합니다. 이때 카메라의 위치는 고정한 채 방향만 약 30도 정도 돌려서 촬영하는 것을 권장합니다.
+
+당연히 움직이는 피사체는 피하는 것이 좋습니다.
+
+2. 입력 영상으로 부터 특징점과 descriptor를 생성합니다. 일반적으로 opencv의 descriptor 생성 기능은 특징점 추출 기능과 동시에 작동하기 때문에 각각을 별도로 수행할 필요는 없습니다. Descriptor의 종류는 제한이 없습니다. (Orb, SURF 등)
+
+3. 두 영상에서 얻은 desciptor를 match 합니다. 이때 OpenCV에서 제공하는 matcher를 사용해도 좋습니다.
+
+4. match를 이용하여 Homography를 계산합니다. 
+
+5. Homograph를 이용하여 한 개의 image를 warping하고, 나마지 image는 copy 하여 최종 영상을 만듭니다.
+
+6. 결과 영상을 출력합니다.
+
+
+
+주의: OpenCV에는 이와 같은 과정을 한번에 수행하기 위한 module(Image Stitching module)이 존재합니다만, 이것을 사용하지 마시고,
+
+각 단계별로 진행하도록 합니다.
+
+참고
+
+1. https://docs.opencv.org/3.4/d5/dde/tutorial_feature_description.html
+
+2. https://docs.opencv.org/3.4/d1/de0/tutorial_py_feature_homography.html
+
+ 
+
+
+
+참고 사항
+
+- 몇 종류의 descriptor는 freature2d 대신 xfreature2d에 포함되어 있어 별도의 opencv_world library를 build 해야 합니다. 첨부파일은 vs2019 x64 release version으로 xfeature2d가 포함되어 있는 build입니다. 참고하십시오.
+
+- descriptor는 크게 feature vector가 나오는 descriptor(surf, sift 등)과 binary descriptor(orb 등)로 나뉘며 종류에 따라 descriptor 간의 거리를 계산하는 방법 (각각 L2, Hamming), 유사한 descriptor를 선택할 때 사용할 수 있는 방법 (각각 flann+bf, bf)이 다릅니다. 따라서 descriptor를 변경하면 관련되어 있는 matcher의 종류도 바꾸어 주어야 합니다.
+
+
+
+install.zip
